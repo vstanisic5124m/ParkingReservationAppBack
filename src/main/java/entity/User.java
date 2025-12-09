@@ -1,4 +1,5 @@
-package com.parkingshare.auth.entity;
+package entity;
+
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,14 @@ public class User {
     @Column(nullable = false, updatable = false)
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column
+    private Long ownedParkingSpaceId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private UserRole role = UserRole.NON_OWNER;
 
     @Column(nullable = false)
     @Builder.Default
