@@ -38,5 +38,119 @@
             <column name="email"/>
         </createIndex>
     </changeSet>
+    <changeSet id="2" author="parking-service">
+        <addColumn tableName="users">
+            <column name="role" type="VARCHAR(20)" defaultValue="NON_OWNER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owned_parking_space_id" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="3" author="parking-service">
+        <createTable tableName="parking_spaces">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="parking_type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="spot_number" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="idx_parking_spaces_type_number" tableName="parking_spaces">
+            <column name="parking_type"/>
+            <column name="spot_number"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="4" author="parking-service">
+        <createTable tableName="reservations">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_reservation_user" references="users(id)"/>
+            </column>
+            <column name="parking_space_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_reservation_parking_space" references="parking_spaces(id)"/>
+            </column>
+            <column name="reservation_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT" defaultValueNumeric="0"/>
+        </createTable>
+
+        <addUniqueConstraint tableName="reservations"
+                             columnNames="parking_space_id, reservation_date"
+                             constraintName="uk_reservation_space_date"/>
+
+        <createIndex indexName="idx_reservations_user_date" tableName="reservations">
+            <column name="user_id"/>
+            <column name="reservation_date"/>
+        </createIndex>
+
+        <createIndex indexName="idx_reservations_date_status" tableName="reservations">
+            <column name="reservation_date"/>
+            <column name="status"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="5" author="parking-service">
+        <createTable tableName="owner_cancellations">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="parking_space_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_cancellation_parking_space" references="parking_spaces(id)"/>
+            </column>
+            <column name="cancellation_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="owner_cancellations"
+                             columnNames="parking_space_id, cancellation_date"
+                             constraintName="uk_cancellation_space_date"/>
+
+        <createIndex indexName="idx_cancellations_date" tableName="owner_cancellations">
+            <column name="cancellation_date"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="6" author="parking-service">
+        <comment>Parking u dvoristu - 50 mesta, parking u garazi 100 mesta</comment>
+
+        <!-- Insert Mesta u dvorisnom parkingu u garazu (1-50) -->
+        <sql>
+            INSERT INTO parking_spaces (parking_type, spot_number, is_active)
+            SELECT 'YARD', generate_series, true
+            FROM generate_series(1, 50);
+        </sql>
+
+        <!-- Insert Mesta u garazi u bazu (1-100) -->
+        <sql>
+            INSERT INTO parking_spaces (parking_type, spot_number, is_active)
+            SELECT 'GARAGE', generate_series, true
+            FROM generate_series(1, 100);
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>
