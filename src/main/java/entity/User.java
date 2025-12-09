@@ -56,6 +56,11 @@ public class User {
     @Builder.Default
     private Integer rating = 0;
 
+    @Column(nullable = false)
+    @Builder.Default
+
+
+
     @Column(nullable = false, updatable = false)
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();

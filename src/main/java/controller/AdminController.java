@@ -3,7 +3,7 @@ package controller;
 import dto.UpdateOwnerStatusRequest;
 import dto.UpdateRatingRequest;
 import dto.UserListResponse;
-import entity.User;
+import entity.*;
 import repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

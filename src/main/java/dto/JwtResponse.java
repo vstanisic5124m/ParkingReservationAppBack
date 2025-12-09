@@ -1,5 +1,6 @@
 package dto;
 
+import entity.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,4 +23,6 @@ public class JwtResponse {
     private String lastName;
     private UserRole role;
     private Long ownedParkingSpaceId;
+    private Boolean isOwner;
+    private Integer rating;
 }
