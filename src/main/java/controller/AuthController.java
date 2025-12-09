@@ -3,7 +3,7 @@ package controller;
 import  dto.JwtResponse;
 import  dto.LoginRequest;
 import  dto.RegisterRequest;
-import com.parkingshare.auth.entity.User;
+import  entity.User;
 import  repository.UserRepository;
 import  util.JwtUtil;
 import jakarta.validation.Valid;
@@ -59,6 +59,8 @@ public class AuthController {
                     .email(savedUser.getEmail())
                     .firstName(savedUser.getFirstName())
                     .lastName(savedUser.getLastName())
+                    .role(user.getRole())
+                    .ownedParkingSpaceId(user.getOwnedParkingSpaceId())
                     .build();
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);

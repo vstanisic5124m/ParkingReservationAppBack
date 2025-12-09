@@ -20,4 +20,6 @@ public class JwtResponse {
     private String email;
     private String firstName;
     private String lastName;
+    private UserRole role;
+    private Long ownedParkingSpaceId;
 }
