@@ -36,21 +36,29 @@ public class User {
     @Column(length = 20)
     private String phoneNumber;
 
-    @Column(nullable = false)
-    @Builder.Default
-    private Boolean isActive = true;
-
-    @Column(nullable = false, updatable = false)
-    @Builder.Default
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @Column
-    private Long ownedParkingSpaceId;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     @Builder.Default
     private UserRole role = UserRole.NON_OWNER;
+
+    @Column
+    private Long ownedParkingSpaceId;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean isActive = true;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean isOwner = false;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer rating = 0;
+
+    @Column(nullable = false, updatable = false)
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(nullable = false)
     @Builder.Default
