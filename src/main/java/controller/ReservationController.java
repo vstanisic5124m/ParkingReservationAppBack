@@ -4,7 +4,9 @@ import dto.ReservationRequest;
 import dto.ReservationResponse;
 import entity.User;
 import service.ReservationService;
+
 import util.SecurityUtil;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ public class ReservationController {
     private SecurityUtil securityUtil;
 
     @PostMapping
-    public ResponseEntity<?> createReservation(@RequestBody ReservationRequest request) {
+    public ResponseEntity<?> createReservation(@Valid @RequestBody ReservationRequest request) {
         try {
             User currentUser = securityUtil.getCurrentUser();
             ReservationResponse response = reservationService.createReservation(request, currentUser);

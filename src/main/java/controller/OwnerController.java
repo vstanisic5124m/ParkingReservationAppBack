@@ -5,6 +5,7 @@ import entity.User;
 import entity.UserRole;
 import service.OwnerService;
 import util.SecurityUtil;
+import jakarta.validation.Valid;import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class OwnerController {
     private SecurityUtil securityUtil;
 
     @PostMapping("/cancel")
-    public ResponseEntity<?> cancelSpotAvailability(@RequestBody OwnerCancellationRequest request) {
+    public ResponseEntity<?> cancelSpotAvailability(@Valid @RequestBody OwnerCancellationRequest request) {
         try {
             User currentUser = securityUtil.getCurrentUser();
 
