@@ -16,5 +16,6 @@ public class ReservationResponse {
     private Long parkingSpaceId;
     private Integer spotNumber;
     private LocalDate reservationDate;
+    private String parkingType;
     private String status;
 }

@@ -62,6 +62,7 @@ public class ReservationService {
         return ReservationResponse.builder()
                 .id(saved.getId())
                 .parkingSpaceId(saved.getParkingSpace().getId())
+                .parkingType(saved.getParkingSpace().getParkingType().name())
                 .spotNumber(saved.getParkingSpace().getSpotNumber())
                 .reservationDate(saved.getReservationDate())
                 .status(saved.getStatus().name())
@@ -81,5 +82,20 @@ public class ReservationService {
         // Update obavezno
         reservation.setStatus(ReservationStatus.CANCELLED);
         reservationRepository.save(reservation);
+    }
+    public java.util.List<ReservationResponse> getMyReservations(User user) {
+        java.util.List<Reservation> reservations = reservationRepository
+                .findByUserIdAndStatus(user.getId(), ReservationStatus.ACTIVE);
+
+        return reservations.stream()
+                .map(r -> ReservationResponse.builder()
+                        .id(r.getId())
+                        .parkingSpaceId(r.getParkingSpace().getId())
+                        .parkingType(r.getParkingSpace().getParkingType().name())
+                        .spotNumber(r.getParkingSpace().getSpotNumber())
+                        .reservationDate(r.getReservationDate())
+                        .status(r.getStatus().name())
+                        .build())
+                .collect(java.util.stream.Collectors.toList());
     }
 }

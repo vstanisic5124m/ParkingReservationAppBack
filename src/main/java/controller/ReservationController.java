@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -50,4 +51,12 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }
     }
+
+    @GetMapping("/my-reservations")
+    public ResponseEntity<List<ReservationResponse>> getMyReservations() {
+        User currentUser = securityUtil.getCurrentUser();
+        List<ReservationResponse> reservations = reservationService.getMyReservations(currentUser);
+        return ResponseEntity.ok(reservations);
+    }
+}
 }
