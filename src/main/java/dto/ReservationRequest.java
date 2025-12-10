@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class ReservationRequest {
     @NotNull(message = "Parking space ID is required")
     private Long parkingSpaceId;
+
     @NotNull(message = "Reservation date is required")
     private LocalDate reservationDate;
 }

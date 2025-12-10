@@ -1,5 +1,6 @@
 package dto;
 
+import entity.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,8 +10,8 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class RegisterRequest {
 
@@ -32,4 +33,8 @@ public class RegisterRequest {
 
     @Size(max = 20, message = "Phone number must not exceed 20 characters")
     private String phoneNumber;
+
+    private UserRole role;  // Opciono, po defaultu: non-owner
+
+    private Long ownedParkingSpaceId;  // Opciono,samo za vlasnike parking mesta
 }
