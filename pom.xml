@@ -9,13 +9,13 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent from com.parkingshare.auth.repository -->
     </parent>
 
     <groupId>com.parkingshare</groupId>
     <artifactId>auth-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>auth-service</name>
+    <name>auth-com.parkingshare.auth.service</name>
     <description>Authentication Service for Parking Reservation System</description>
 
     <properties>

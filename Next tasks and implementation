@@ -21,17 +21,17 @@ The backend had the cancellation endpoint (`DELETE /api/reservations/{id}`), but
 ### Backend promene
 
 #### 1. Enhanced ReservationResponse DTO
-**File:** `src/main/java/com/parkingshare/auth/dto/ReservationResponse.java`
+**File:** `src/main/java/com/parkingshare/auth/com.parkingshare.auth.dto/ReservationResponse.java`
 - Added `parkingType` field to help frontend identify YARD vs GARAGE spaces
 
 #### 2. Updated ReservationService
-**File:** `src/main/java/com/parkingshare/auth/service/ReservationService.java`
+**File:** `src/main/java/com/parkingshare/auth/com.parkingshare.auth.service/ReservationService.java`
 - Updated `createReservation()` to include `parkingType` in response
 - Added `getMyReservations(User user)` method to retrieve user's active reservations
 - Returns list of `ReservationResponse` objects with all necessary details
 
 #### 3. Added ReservationController Endpoint
-**File:** `src/main/java/com/parkingshare/auth/controller/ReservationController.java`
+**File:** `src/main/java/com/parkingshare/auth/com.parkingshare.auth.controller/ReservationController.java`
 - Added `GET /api/reservations/my-reservations` endpoint
 - Secured with JWT authentication
 - Returns current user's active reservations
@@ -43,7 +43,7 @@ The backend had the cancellation endpoint (`DELETE /api/reservations/{id}`), but
 - Added `parkingType` field to `Reservation` interface
 
 #### 2. Enhanced ParkingService
-**File:** `frontend/src/app/services/parking.service.ts`
+**File:** `frontend/src/app/services/parking.com.parkingshare.auth.service.ts`
 - Added `getMyReservations(): Observable<Reservation[]>` method
 - Calls new backend endpoint
 

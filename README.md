@@ -72,7 +72,7 @@ $env:DB_PASSWORD="your-postgres-password"
 mvn clean package
 
 # Run the backend
-java -jar target/auth-service-0.0.1-SNAPSHOT.jar
+java -jar target/auth-com.parkingshare.auth.service-0.0.1-SNAPSHOT.jar
 ```
 
 You should see output indicating the server started on port 8080:
@@ -163,7 +163,7 @@ http://localhost:4200
 
 **Problem: "Cannot connect to backend"**
 - Solution: Verify the backend is running on http://localhost:8080
-- Check the API URL in `frontend/src/app/services/auth.service.ts`
+- Check the API URL in `frontend/src/app/services/auth.com.parkingshare.auth.service.ts`
 
 **Problem: "Port 4200 already in use"**
 - Solution: Run `ng serve --port 4300` to use a different port

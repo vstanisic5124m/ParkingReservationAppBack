@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
-    <changeSet id="1" author="auth-service">
+    <changeSet id="1" author="auth-com.parkingshare.auth.service">
         <createTable tableName="users">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -38,7 +38,7 @@
             <column name="email"/>
         </createIndex>
     </changeSet>
-    <changeSet id="2" author="parking-service">
+    <changeSet id="2" author="parking-com.parkingshare.auth.service">
         <addColumn tableName="users">
             <column name="role" type="VARCHAR(20)" defaultValue="NON_OWNER">
                 <constraints nullable="false"/>
@@ -47,7 +47,7 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="3" author="parking-service">
+    <changeSet id="3" author="parking-com.parkingshare.auth.service">
         <createTable tableName="parking_spaces">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -69,7 +69,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet id="4" author="parking-service">
+    <changeSet id="4" author="parking-com.parkingshare.auth.service">
         <createTable tableName="reservations">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -110,7 +110,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet id="5" author="parking-service">
+    <changeSet id="5" author="parking-com.parkingshare.auth.service">
         <createTable tableName="owner_cancellations">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -135,7 +135,7 @@
         </createIndex>
     </changeSet>
 
-    <changeSet id="6" author="parking-service">
+    <changeSet id="6" author="parking-com.parkingshare.auth.service">
         <comment>Parking u dvoristu - 50 mesta, parking u garazi 100 mesta</comment>
 
         <!-- Insert Mesta u dvorisnom parkingu u garazu (1-50) -->
