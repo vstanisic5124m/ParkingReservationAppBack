@@ -21,9 +21,30 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.xml
     enabled: true
 
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
 jwt:
   secret: ${JWT_SECRET:PLACEHOLDER_SECRET_KEY_MUST_BE_SET_VIA_ENVIRONMENT_VARIABLE_MIN_256_BITS}
   expiration: ${JWT_EXPIRATION:86400000}
+
+  app:
+    mail:
+      from: ${MAIL_FROM:noreply@parkingshare.com}
+      enabled: ${MAIL_ENABLED:false}
 
 server:
   port: ${SERVER_PORT:8080}
