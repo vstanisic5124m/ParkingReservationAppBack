@@ -1,31 +1,55 @@
-# ParkingReservationAppBack
+# Parking Reservation App - Backend
 
-## Autogenereted
+Authentication and authorization service for the Parking Reservation System.
 
+## 🚀 Quick Start
 
-## Prerequisites Check
+### Prerequisites
 
 Before starting, ensure you have:
 
 - ✅ Java 17 or higher (`java -version`)
 - ✅ Maven 3.6+ (`mvn -version`)
 - ✅ PostgreSQL 12+ installed and running
-- ✅ Node.js 18+ (`node -version`)
-- ✅ npm (`npm -version`)
 
-## Step-by-Step Setup
+### Option 1: Automated Setup (Recommended)
 
-### Step 1: Clone the Repository
-
+**Linux/Mac:**
 ```bash
-git clone https://github.com/vstanisic5124m/ParkingReservartion.git
-cd ParkingReservartion
+# 1. Setup the database (first time only)
+./setup-db.sh
+
+# 2. Start the application
+./start.sh
 ```
 
-### Step 2: Database Setup
+**Windows:**
+```cmd
+REM 1. Create the database manually (see Database Setup section below)
 
-Create the PostgreSQL database:
+REM 2. Start the application
+start.bat
+```
 
+The application will start on `http://localhost:8080` 🎉
+
+### Option 2: Manual Setup
+
+#### Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/vstanisic5124m/ParkingReservationAppBack.git
+cd ParkingReservationAppBack
+```
+
+#### Step 2: Database Setup
+
+**Option A: Using the setup script (Linux/Mac only):**
+```bash
+./setup-db.sh
+```
+
+**Option B: Manual setup:**
 ```bash
 # Connect to PostgreSQL
 psql -U postgres
@@ -37,13 +61,13 @@ CREATE DATABASE auth_db;
 \q
 ```
 
-### Step 3: Configure Backend Environment Variables
+#### Step 3: Configure Environment Variables (Optional)
 
-Set the required environment variables:
+The application comes with sensible defaults for development. If you need to customize:
 
 **Linux/Mac:**
 ```bash
-export JWT_SECRET="my-super-secret-jwt-key-with-at-least-32-characters-for-security"
+export JWT_SECRET="your-custom-secret-key-min-32-chars"
 export DB_URL="jdbc:postgresql://localhost:5432/auth_db"
 export DB_USERNAME="postgres"
 export DB_PASSWORD="your-postgres-password"
@@ -51,7 +75,7 @@ export DB_PASSWORD="your-postgres-password"
 
 **Windows (Command Prompt):**
 ```cmd
-set JWT_SECRET=my-super-secret-jwt-key-with-at-least-32-characters-for-security
+set JWT_SECRET=your-custom-secret-key-min-32-chars
 set DB_URL=jdbc:postgresql://localhost:5432/auth_db
 set DB_USERNAME=postgres
 set DB_PASSWORD=your-postgres-password
@@ -59,121 +83,30 @@ set DB_PASSWORD=your-postgres-password
 
 **Windows (PowerShell):**
 ```powershell
-$env:JWT_SECRET="my-super-secret-jwt-key-with-at-least-32-characters-for-security"
+$env:JWT_SECRET="your-custom-secret-key-min-32-chars"
 $env:DB_URL="jdbc:postgresql://localhost:5432/auth_db"
 $env:DB_USERNAME="postgres"
 $env:DB_PASSWORD="your-postgres-password"
 ```
 
-### Step 4: Start the Backend
+#### Step 4: Build and Run
 
 ```bash
-# Build the backend
+# Build the application
 mvn clean package
 
-# Run the backend
-java -jar target/auth-com.parkingshare.auth.service-0.0.1-SNAPSHOT.jar
+# Run the application
+java -jar target/auth-service-0.0.1-SNAPSHOT.jar
 ```
 
-You should see output indicating the server started on port 8080:
+The server will start on port 8080:
 ```
 Started AuthServiceApplication in X.XXX seconds
 ```
 
-**Keep this terminal running!**
+## 🧪 Testing the API
 
-### Step 5: Start the Frontend
-
-Open a **new terminal** window:
-
-```bash
-# Navigate to the frontend directory
-cd frontend
-
-# Install dependencies (first time only)
-npm install
-
-# Start the development server
-npm start
-```
-
-You should see:
-```
-** Angular Live Development Server is listening on localhost:4200 **
-```
-
-**Keep this terminal running too!**
-
-### Step 6: Access the Application
-
-Open your web browser and navigate to:
-
-```
-http://localhost:4200
-```
-
-## Testing the Application
-
-### 1. Register a New User
-
-1. Click on "Register here" link or navigate to `http://localhost:4200/register`
-2. Fill in the registration form:
-   - **Email**: test@example.com
-   - **Password**: password123 (minimum 8 characters)
-   - **First Name**: John
-   - **Last Name**: Doe
-   - **Phone Number**: +1234567890 (optional)
-3. Click "Register"
-4. You should be automatically logged in and redirected to the dashboard
-
-### 2. Test Login
-
-1. Click "Logout" from the dashboard
-2. You'll be redirected to the login page
-3. Enter your credentials:
-   - **Email**: test@example.com
-   - **Password**: password123
-4. Click "Login"
-5. You should be redirected to the dashboard
-
-### 3. Test Protected Routes
-
-1. While logged out, try to access `http://localhost:4200/dashboard`
-2. You should be redirected to the login page
-3. After logging in, you can access the dashboard
-
-## Troubleshooting
-
-### Backend Issues
-
-**Problem: "JWT_SECRET is required"**
-- Solution: Make sure you've set the JWT_SECRET environment variable
-
-**Problem: "Unable to connect to database"**
-- Solution: Verify PostgreSQL is running and the database exists
-- Check your DB_URL, DB_USERNAME, and DB_PASSWORD are correct
-
-**Problem: "Port 8080 already in use"**
-- Solution: Stop any other application using port 8080 or set SERVER_PORT environment variable to a different port
-
-### Frontend Issues
-
-**Problem: "CORS Error" in browser console**
-- Solution: Make sure the backend is running and CORS is properly configured
-
-**Problem: "Cannot connect to backend"**
-- Solution: Verify the backend is running on http://localhost:8080
-- Check the API URL in `frontend/src/app/services/auth.com.parkingshare.auth.service.ts`
-
-**Problem: "Port 4200 already in use"**
-- Solution: Run `ng serve --port 4300` to use a different port
-
-**Problem: npm install fails**
-- Solution: Delete `node_modules` and `package-lock.json`, then run `npm install` again
-
-## API Testing with curl
-
-You can also test the backend API directly:
+You can test the backend API directly using curl:
 
 ### Register a user:
 ```bash
@@ -198,10 +131,100 @@ curl -X POST http://localhost:8080/api/auth/login \
   }'
 ```
 
-## Stopping the Application
+## 📁 Project Structure
 
-### To stop the backend:
-- Press `Ctrl+C` in the backend terminal
+```
+ParkingReservationAppBack/
+├── src/
+│   ├── main/
+│   │   ├── java/com/parkingshare/auth/    # Java source code
+│   │   └── resources/
+│   │       ├── application.yml             # Application configuration
+│   │       └── db/changelog/               # Liquibase database migrations
+│   └── test/                               # Test files
+├── .env.example                            # Environment variables template
+├── .gitignore                              # Git ignore file
+├── setup-db.sh                             # Database setup script (Linux/Mac)
+├── start.sh                                # Application start script (Linux/Mac)
+├── start.bat                               # Application start script (Windows)
+├── pom.xml                                 # Maven configuration
+└── README.md                               # This file
+```
 
-### To stop the frontend:
-- Press `Ctrl+C` in the frontend terminal
+## ⚙️ Configuration
+
+All configuration is in `src/main/resources/application.yml`. The application uses environment variables for sensitive data:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `JWT_SECRET` | *(see .env.example)* | JWT signing key (min 32 characters) |
+| `DB_URL` | `jdbc:postgresql://localhost:5432/auth_db` | Database connection URL |
+| `DB_USERNAME` | `postgres` | Database username |
+| `DB_PASSWORD` | `postgres` | Database password |
+| `SERVER_PORT` | `8080` | Server port |
+| `MAIL_ENABLED` | `false` | Enable/disable email features |
+
+See `.env.example` for a complete list of available configuration options.
+
+## ⚠️ Troubleshooting
+
+### Backend Issues
+
+**Problem: "JWT_SECRET is required"**
+- Solution: The start scripts set this automatically. If running manually, export the JWT_SECRET environment variable.
+
+**Problem: "Unable to connect to database"**
+- Solution: 
+  - Verify PostgreSQL is running: `pg_isready`
+  - Check if the database exists: `psql -U postgres -l | grep auth_db`
+  - Run the setup script: `./setup-db.sh`
+
+**Problem: "Port 8080 already in use"**
+- Solution: Set a different port: `export SERVER_PORT=8081` (Linux/Mac) or `set SERVER_PORT=8081` (Windows)
+
+**Problem: Build fails with "JAVA_HOME not set"**
+- Solution: Set JAVA_HOME to your JDK installation directory
+
+**Problem: Maven command not found**
+- Solution: Install Maven or use the Maven wrapper if available
+
+### Database Issues
+
+**Problem: "relation does not exist" errors**
+- Solution: Liquibase will automatically create tables on first run. Ensure the application starts successfully at least once.
+
+**Problem: Permission denied when creating database**
+- Solution: Run `sudo -u postgres createdb auth_db` or create it via psql as a superuser
+
+## 🛑 Stopping the Application
+
+Press `Ctrl+C` in the terminal where the application is running.
+
+## 🔧 Development
+
+### Running Tests
+```bash
+mvn test
+```
+
+### Building without running tests
+```bash
+mvn clean package -DskipTests
+```
+
+### Running with custom profile
+```bash
+java -jar target/auth-service-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
+```
+
+## 📝 License
+
+This project is part of the Parking Reservation System.
+
+## 🔗 Related Repositories
+
+- Frontend: [ParkingReservationAppFront](https://github.com/vstanisic5124m/ParkingReservationAppFront)
+
+## 📞 Support
+
+If you encounter any issues not covered in this README, please open an issue on GitHub.
