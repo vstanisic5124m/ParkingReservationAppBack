@@ -22,6 +22,9 @@ public class OwnerService {
     @Autowired
     private ParkingSpaceRepo parkingSpaceRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     @Transactional
     public void cancelSpotAvailability(OwnerCancellationRequest request, User owner) {
         // Validiraj vlasnika parking mesta
@@ -66,5 +69,8 @@ public class OwnerService {
                 .build();
 
         ownerCancellationRepository.save(cancellation);
+
+        // Posalji korisniku email notifikaciju i obavesti ga (daj mu feedback)
+        emailService.sendOwnerCancellationNotification(owner, parkingSpace, cancellationDate);
     }
 }

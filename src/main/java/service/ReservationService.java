@@ -25,6 +25,9 @@ public class ReservationService {
     @Autowired
     private OwnerCancellationRepo ownerCancellationRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     @Transactional
     public ReservationResponse createReservation(ReservationRequest request, User user) {
         // Proveri i izvrsi validaciju da li parking mesto postoji
@@ -59,6 +62,9 @@ public class ReservationService {
 
         Reservation saved = reservationRepository.save(reservation);
 
+        // Posalji email korisniku i daj mu feedback u vidu notifikacije
+        emailService.sendReservationConfirmation(user, saved);
+
         return ReservationResponse.builder()
                 .id(saved.getId())
                 .parkingSpaceId(saved.getParkingSpace().getId())
@@ -82,6 +88,9 @@ public class ReservationService {
         // Update obavezno
         reservation.setStatus(ReservationStatus.CANCELLED);
         reservationRepository.save(reservation);
+
+        // Posalji mejl korisniku u vidu notifikacije
+        emailService.sendReservationCancellation(user, reservation);
     }
     public java.util.List<ReservationResponse> getMyReservations(User user) {
         java.util.List<Reservation> reservations = reservationRepository
