@@ -14,13 +14,22 @@ Before starting, ensure you have:
 
 ### Option 1: Automated Setup (Recommended)
 
-**Linux/Mac:**
+**Linux/Mac (using shell scripts):**
 ```bash
 # 1. Setup the database (first time only)
 ./setup-db.sh
 
 # 2. Start the application
 ./start.sh
+```
+
+**Linux/Mac (using make):**
+```bash
+# 1. Setup the database (first time only)
+make setup
+
+# 2. Start the application
+make start
 ```
 
 **Windows:**
@@ -144,6 +153,8 @@ ParkingReservationAppBack/
 │   └── test/                               # Test files
 ├── .env.example                            # Environment variables template
 ├── .gitignore                              # Git ignore file
+├── Makefile                                # Convenient make commands
+├── GETTING_STARTED.md                      # Detailed setup guide
 ├── setup-db.sh                             # Database setup script (Linux/Mac)
 ├── start.sh                                # Application start script (Linux/Mac)
 ├── start.bat                               # Application start script (Windows)

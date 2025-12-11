@@ -33,6 +33,8 @@ This document provides a complete guide to set up and run the Parking Reservatio
 
 ### For Linux/macOS Users
 
+**Option A: Using Shell Scripts**
+
 1. **Setup Database** (first time only):
    ```bash
    ./setup-db.sh
@@ -41,6 +43,18 @@ This document provides a complete guide to set up and run the Parking Reservatio
 2. **Start the Application**:
    ```bash
    ./start.sh
+   ```
+
+**Option B: Using Make**
+
+1. **Setup Database** (first time only):
+   ```bash
+   make setup
+   ```
+
+2. **Start the Application**:
+   ```bash
+   make start
    ```
 
 That's it! The application will be available at `http://localhost:8080`
