@@ -1,10 +1,9 @@
 package com.parkingshare.auth.controller;
 
-import com.parkingshare.auth.dto.UpdateOwnerStatusRequest;
-import com.parkingshare.auth.dto.UpdateRatingRequest;
-import com.parkingshare.auth.dto.UserListResponse;
+import com.parkingshare.auth.dto.*;
 import com.parkingshare.auth.entity.*;
 import com.parkingshare.auth.repository.UserRepository;
+import com.parkingshare.auth.service.AdminService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +21,9 @@ public class AdminController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AdminService adminService;
 
     @GetMapping("/users")
     public ResponseEntity<?> listAllUsers() {
@@ -119,6 +121,63 @@ public class AdminController {
         } catch (Exception e) {
             Map<String, String> error = new HashMap<>();
             error.put("message", "Failed to update rating: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
+
+    @GetMapping("/statistics")
+    public ResponseEntity<?> getStatistics() {
+        try {
+            AdminStatisticsResponse statistics = adminService.getStatistics();
+            return ResponseEntity.ok(statistics);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "Failed to retrieve statistics: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
+
+    @GetMapping("/reservations")
+    public ResponseEntity<?> getAllReservations(@RequestParam(required = false) String status) {
+        try {
+            List<AdminReservationResponse> reservations;
+            if (status != null && !status.isEmpty()) {
+                reservations = adminService.getReservationsByStatus(status);
+            } else {
+                reservations = adminService.getAllReservations();
+            }
+            return ResponseEntity.ok(reservations);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "Failed to retrieve reservations: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
+
+    @GetMapping("/parking-spaces")
+    public ResponseEntity<?> getAllParkingSpaces() {
+        try {
+            List<AdminParkingSpaceResponse> parkingSpaces = adminService.getAllParkingSpaces();
+            return ResponseEntity.ok(parkingSpaces);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "Failed to retrieve parking spaces: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
+
+    @GetMapping("/owner-cancellations")
+    public ResponseEntity<?> getAllOwnerCancellations() {
+        try {
+            List<AdminOwnerCancellationResponse> cancellations = adminService.getAllOwnerCancellations();
+            return ResponseEntity.ok(cancellations);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "Failed to retrieve owner cancellations: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
