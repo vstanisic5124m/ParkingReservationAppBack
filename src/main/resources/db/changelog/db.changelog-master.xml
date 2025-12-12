@@ -110,6 +110,14 @@
         </createIndex>
     </changeSet>
 
+    <changeSet id="add-is-owner-to-users" author="yourname">
+        <addColumn tableName="users">
+            <column name="is_owner" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
     <changeSet id="5" author="parking-com.parkingshare.auth.service">
         <createTable tableName="owner_cancellations">
             <column name="id" type="BIGINT" autoIncrement="true">
@@ -133,6 +141,14 @@
         <createIndex indexName="idx_cancellations_date" tableName="owner_cancellations">
             <column name="cancellation_date"/>
         </createIndex>
+    </changeSet>
+
+    <changeSet id="add-rating-to-users" author="yourname">
+        <addColumn tableName="users">
+            <column name="rating" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
     </changeSet>
 
     <changeSet id="6" author="parking-com.parkingshare.auth.service">

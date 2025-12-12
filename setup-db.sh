@@ -9,7 +9,7 @@ echo "=========================================="
 echo ""
 
 DB_NAME="${DB_NAME:-auth_db}"
-DB_USER="${DB_USERNAME:-postgres}"
+DB_USER="${DB_USERNAME:-vukstanisic}"
 DB_HOST="${DB_HOST:-localhost}"
 DB_PORT="${DB_PORT:-5432}"
 
