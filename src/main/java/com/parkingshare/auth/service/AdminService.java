@@ -31,22 +31,26 @@ public class AdminService {
     private OwnerCancellationRepo ownerCancellationRepository;
 
     public AdminStatisticsResponse getStatistics() {
-        long totalUsers = userRepository.count();
-        long activeUsers = userRepository.findAll().stream()
+        // Fetch all users once and compute statistics
+        List<com.parkingshare.auth.entity.User> allUsers = userRepository.findAll();
+        long totalUsers = allUsers.size();
+        long activeUsers = allUsers.stream()
                 .filter(user -> user.getIsActive())
                 .count();
-        long ownersCount = userRepository.findAll().stream()
+        long ownersCount = allUsers.stream()
                 .filter(user -> user.getIsOwner())
                 .count();
 
         long totalParkingSpaces = parkingSpaceRepository.count();
         long activeParkingSpaces = parkingSpaceRepository.findByIsActiveTrue().size();
 
-        long totalReservations = reservationRepository.count();
-        long activeReservations = reservationRepository.findAll().stream()
+        // Fetch all reservations once and compute statistics
+        List<Reservation> allReservations = reservationRepository.findAll();
+        long totalReservations = allReservations.size();
+        long activeReservations = allReservations.stream()
                 .filter(r -> r.getStatus() == ReservationStatus.ACTIVE)
                 .count();
-        long cancelledReservations = reservationRepository.findAll().stream()
+        long cancelledReservations = allReservations.stream()
                 .filter(r -> r.getStatus() == ReservationStatus.CANCELLED)
                 .count();
 
@@ -67,22 +71,7 @@ public class AdminService {
 
     public List<AdminReservationResponse> getAllReservations() {
         List<Reservation> reservations = reservationRepository.findAll();
-
-        return reservations.stream()
-                .map(r -> AdminReservationResponse.builder()
-                        .id(r.getId())
-                        .userId(r.getUser().getId())
-                        .userEmail(r.getUser().getEmail())
-                        .userName(r.getUser().getFirstName() + " " + r.getUser().getLastName())
-                        .parkingSpaceId(r.getParkingSpace().getId())
-                        .parkingType(r.getParkingSpace().getParkingType().name())
-                        .spotNumber(r.getParkingSpace().getSpotNumber())
-                        .reservationDate(r.getReservationDate())
-                        .status(r.getStatus().name())
-                        .createdAt(r.getCreatedAt())
-                        .updatedAt(r.getUpdatedAt())
-                        .build())
-                .collect(Collectors.toList());
+        return mapToAdminReservationResponses(reservations);
     }
 
     public List<AdminReservationResponse> getReservationsByStatus(String status) {
@@ -97,6 +86,10 @@ public class AdminService {
                 .filter(r -> r.getStatus() == reservationStatus)
                 .collect(Collectors.toList());
 
+        return mapToAdminReservationResponses(reservations);
+    }
+
+    private List<AdminReservationResponse> mapToAdminReservationResponses(List<Reservation> reservations) {
         return reservations.stream()
                 .map(r -> AdminReservationResponse.builder()
                         .id(r.getId())
