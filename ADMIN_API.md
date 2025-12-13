@@ -349,6 +349,187 @@ The response should contain current system statistics:
 
 ---
 
+### 8. Create New Admin
+
+Create a new admin account.
+
+**Endpoint:** `POST /api/admin/admins`
+
+**Request Body:**
+```json
+{
+  "email": "newadmin@example.com",
+  "password": "securepassword123",
+  "firstName": "Jane",
+  "lastName": "Admin",
+  "phoneNumber": "+1234567890"
+}
+```
+
+**Response:**
+```json
+{
+  "id": 1,
+  "email": "newadmin@example.com",
+  "firstName": "Jane",
+  "lastName": "Admin",
+  "phoneNumber": "+1234567890",
+  "isActive": true,
+  "createdAt": "2024-12-13T10:30:00",
+  "updatedAt": "2024-12-13T10:30:00"
+}
+```
+
+**Example:**
+```bash
+curl -X POST http://localhost:8080/api/admin/admins \
+  -H "Authorization: Bearer <your-jwt-token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "newadmin@example.com",
+    "password": "securepassword123",
+    "firstName": "Jane",
+    "lastName": "Admin",
+    "phoneNumber": "+1234567890"
+  }'
+```
+
+---
+
+### 9. Get All Admins
+
+List all admin accounts in the system.
+
+**Endpoint:** `GET /api/admin/admins`
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "email": "admin@example.com",
+    "firstName": "Jane",
+    "lastName": "Admin",
+    "phoneNumber": "+1234567890",
+    "isActive": true,
+    "createdAt": "2024-12-13T10:30:00",
+    "updatedAt": "2024-12-13T10:30:00"
+  }
+]
+```
+
+**Example:**
+```bash
+curl -X GET http://localhost:8080/api/admin/admins \
+  -H "Authorization: Bearer <your-jwt-token>"
+```
+
+---
+
+### 10. Get Admin by ID
+
+Retrieve a specific admin account by ID.
+
+**Endpoint:** `GET /api/admin/admins/{id}`
+
+**Path Parameters:**
+- `id`: ID of the admin to retrieve
+
+**Response:**
+```json
+{
+  "id": 1,
+  "email": "admin@example.com",
+  "firstName": "Jane",
+  "lastName": "Admin",
+  "phoneNumber": "+1234567890",
+  "isActive": true,
+  "createdAt": "2024-12-13T10:30:00",
+  "updatedAt": "2024-12-13T10:30:00"
+}
+```
+
+**Example:**
+```bash
+curl -X GET http://localhost:8080/api/admin/admins/1 \
+  -H "Authorization: Bearer <your-jwt-token>"
+```
+
+---
+
+### 11. Update Admin
+
+Update an existing admin account.
+
+**Endpoint:** `PUT /api/admin/admins/{id}`
+
+**Path Parameters:**
+- `id`: ID of the admin to update
+
+**Request Body:**
+```json
+{
+  "firstName": "Jane",
+  "lastName": "Administrator",
+  "phoneNumber": "+0987654321",
+  "isActive": true
+}
+```
+
+**Note:** All fields are optional. Only provided fields will be updated.
+
+**Response:**
+```json
+{
+  "id": 1,
+  "email": "admin@example.com",
+  "firstName": "Jane",
+  "lastName": "Administrator",
+  "phoneNumber": "+0987654321",
+  "isActive": true,
+  "createdAt": "2024-12-13T10:30:00",
+  "updatedAt": "2024-12-13T14:15:00"
+}
+```
+
+**Example:**
+```bash
+curl -X PUT http://localhost:8080/api/admin/admins/1 \
+  -H "Authorization: Bearer <your-jwt-token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstName": "Jane",
+    "lastName": "Administrator",
+    "phoneNumber": "+0987654321"
+  }'
+```
+
+---
+
+### 12. Delete Admin
+
+Delete an admin account.
+
+**Endpoint:** `DELETE /api/admin/admins/{id}`
+
+**Path Parameters:**
+- `id`: ID of the admin to delete
+
+**Response:**
+```json
+{
+  "message": "Admin deleted successfully"
+}
+```
+
+**Example:**
+```bash
+curl -X DELETE http://localhost:8080/api/admin/admins/1 \
+  -H "Authorization: Bearer <your-jwt-token>"
+```
+
+---
+
 ## Support
 
 For issues or questions about the admin API, please refer to the main README.md or open an issue on GitHub.
