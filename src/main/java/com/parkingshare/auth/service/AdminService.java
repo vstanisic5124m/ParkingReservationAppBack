@@ -1,15 +1,18 @@
 package com.parkingshare.auth.service;
 
 import com.parkingshare.auth.dto.*;
+import com.parkingshare.auth.entity.Admin;
 import com.parkingshare.auth.entity.OwnerCancellation;
 import com.parkingshare.auth.entity.ParkingSpace;
 import com.parkingshare.auth.entity.Reservation;
 import com.parkingshare.auth.entity.ReservationStatus;
+import com.parkingshare.auth.repository.AdminRepository;
 import com.parkingshare.auth.repository.OwnerCancellationRepo;
 import com.parkingshare.auth.repository.ParkingSpaceRepo;
 import com.parkingshare.auth.repository.ReservationRepo;
 import com.parkingshare.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +25,9 @@ public class AdminService {
     private UserRepository userRepository;
 
     @Autowired
+    private AdminRepository adminRepository;
+
+    @Autowired
     private ParkingSpaceRepo parkingSpaceRepository;
 
     @Autowired
@@ -29,6 +35,9 @@ public class AdminService {
 
     @Autowired
     private OwnerCancellationRepo ownerCancellationRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public AdminStatisticsResponse getStatistics() {
         // Fetch all users once and compute statistics
@@ -133,5 +142,76 @@ public class AdminService {
                         .createdAt(oc.getCreatedAt())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    // Admin entity CRUD operations
+    public AdminResponse createAdmin(CreateAdminRequest request) {
+        if (adminRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Admin with this email already exists");
+        }
+
+        Admin admin = Admin.builder()
+                .email(request.getEmail())
+                .passwordHash(passwordEncoder.encode(request.getPassword()))
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .phoneNumber(request.getPhoneNumber())
+                .build();
+
+        Admin savedAdmin = adminRepository.save(admin);
+        return mapToAdminResponse(savedAdmin);
+    }
+
+    public List<AdminResponse> getAllAdmins() {
+        return adminRepository.findAll().stream()
+                .map(this::mapToAdminResponse)
+                .collect(Collectors.toList());
+    }
+
+    public AdminResponse getAdminById(Long id) {
+        Admin admin = adminRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Admin not found with id: " + id));
+        return mapToAdminResponse(admin);
+    }
+
+    public AdminResponse updateAdmin(Long id, UpdateAdminRequest request) {
+        Admin admin = adminRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Admin not found with id: " + id));
+
+        if (request.getFirstName() != null) {
+            admin.setFirstName(request.getFirstName());
+        }
+        if (request.getLastName() != null) {
+            admin.setLastName(request.getLastName());
+        }
+        if (request.getPhoneNumber() != null) {
+            admin.setPhoneNumber(request.getPhoneNumber());
+        }
+        if (request.getIsActive() != null) {
+            admin.setIsActive(request.getIsActive());
+        }
+
+        Admin updatedAdmin = adminRepository.save(admin);
+        return mapToAdminResponse(updatedAdmin);
+    }
+
+    public void deleteAdmin(Long id) {
+        if (!adminRepository.existsById(id)) {
+            throw new RuntimeException("Admin not found with id: " + id);
+        }
+        adminRepository.deleteById(id);
+    }
+
+    private AdminResponse mapToAdminResponse(Admin admin) {
+        return AdminResponse.builder()
+                .id(admin.getId())
+                .email(admin.getEmail())
+                .firstName(admin.getFirstName())
+                .lastName(admin.getLastName())
+                .phoneNumber(admin.getPhoneNumber())
+                .isActive(admin.getIsActive())
+                .createdAt(admin.getCreatedAt())
+                .updatedAt(admin.getUpdatedAt())
+                .build();
     }
 }
