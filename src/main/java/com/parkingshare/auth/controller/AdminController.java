@@ -181,4 +181,85 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
+
+    // Admin entity CRUD endpoints
+    @PostMapping("/admins")
+    public ResponseEntity<?> createAdmin(@Valid @RequestBody CreateAdminRequest request) {
+        try {
+            AdminResponse admin = adminService.createAdmin(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(admin);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "Failed to create admin: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
+
+    @GetMapping("/admins")
+    public ResponseEntity<?> getAllAdmins() {
+        try {
+            List<AdminResponse> admins = adminService.getAllAdmins();
+            return ResponseEntity.ok(admins);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "Failed to retrieve admins: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
+
+    @GetMapping("/admins/{id}")
+    public ResponseEntity<?> getAdminById(@PathVariable Long id) {
+        try {
+            AdminResponse admin = adminService.getAdminById(id);
+            return ResponseEntity.ok(admin);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "Failed to retrieve admin: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
+
+    @PutMapping("/admins/{id}")
+    public ResponseEntity<?> updateAdmin(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateAdminRequest request) {
+        try {
+            AdminResponse admin = adminService.updateAdmin(id, request);
+            return ResponseEntity.ok(admin);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "Failed to update admin: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
+
+    @DeleteMapping("/admins/{id}")
+    public ResponseEntity<?> deleteAdmin(@PathVariable Long id) {
+        try {
+            adminService.deleteAdmin(id);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Admin deleted successfully");
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "Failed to delete admin: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
 }
