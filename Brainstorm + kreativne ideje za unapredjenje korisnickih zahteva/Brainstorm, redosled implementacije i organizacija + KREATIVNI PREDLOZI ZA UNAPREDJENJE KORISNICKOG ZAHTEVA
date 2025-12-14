@@ -1,0 +1,56 @@
+BRAINSTORM:
+* Prva strana bi bila —-> homepage
+Prvo homepage —> na vrhu kalendar, pravougaonici sa slobodnim i zauzetim mestima za
+(dvorisni i garazu) *GET
+Kako bi to izgledalo: nacrt sa papira dizajna ili figma mockup—-> posaljem gptju sliku (heder
+welcome, ulogovan si…)—-> Razraditi pricu
+Klikabilni svaki broj i kalendar—-> po danima (NE treba po satima) !! Tabele: 5x10 i 10x10 (id
+tabele tip parkinga: parking 1 i parking 2 ); izbaci popup za rezervaciju kada kliknem na kalendar
+(poslat mejl korisniku) isto i prilikom otkazivanja—-> pozvao bih servis za registraciju (servis za
+slanje mejla u buducnosti);
+
+U tabeli parkinga svaka celija predstavlja parking mesto (td element), broj parkinga pridruzujemo
+id atributu td elementa; Crvena mesta su zauzeta, zelena su dozvoljena (background color) GET iz
+baze sta je slobodno, sta zauzeto —-> dodavao bih preko klase (td class celije zauzeto ili
+slobodno); niz json objekata po satima (test file);
+
+Fja rezervacije —-> klik na zeleno mesto (POPUP sa porukom) —> uspesno rezervisano ( u buducnosti mail
+service) —> proverite mejl obavestenja ; oboji celiju u plavu boju da sam ja taj koji je rezervisao (ne crvena
+ne zelena); saljem datum, (korisnik je rezervisao parking mesto id taj i taj)
+Fja otkaza rezervacije—-> Uspesno ste otkazali rezervaciju ponovo popu , kasnije mejl
+Ako dvoje klikne u isto vreme—> konkurentno zakazivanje (mutex, token npr ?) —-> ko prvi posalje bazi upit
+Druga stranica je otkaz rezervacije od strane vlasnika mesta —-> kalendar za tekuci mesec, mogu da
+otkazem danas za januar npr. Kalendar ce biti klikabilni, tabela sa chekerima za tekuci mesec npr
+Ako je posle 17h —> ne mozete da otkazete mesto za sutra
+U 19h danas ne mogu da oznacim sutrasnji dan nego tek prekosutra sto znaci da mi opada rejting koriscenja
+i samim tim ne mogu da izaberem taj datum; disablujem sutrasnji dan, a za prekosutra pa nadalje mogu sta
+hocu da biram iz kalendara
+
+KREATIVNI PREDLOZI ZA UNAPREDJENJE KORISNICKOG ZAHTEVA :
+
+Aplikativni logovi—-> ko je sta radio od korisnika (bekend)—-> unapredjivanje aplikacije—> primedbe
+korisnika resavamo tako sto pratimo rad app u realnom vremenu, za greske npr.
+Vlasnik mesta se nije setio do 17h da otkaze I stoji mu zeleno iako nece doci, time je ispao nekolegijalan
+prema kolegi kome je parking neophodan—-> vlasniku da opadne rejting na sistemu pa prilikom takvog
+prekrsaja da dobije negativne poene pa u nekom momentu da se potencijalno otkaze vlasnistvo mesta
+(aplikacija je ranjiva) rejting sistem: npr 3 puta zezne, oduzme mu se mesto (PENALI RECIMO)
+2 kategorije korisnika: vlasnik —-> strana 2, nikada ne ulazi na stranu 1 (korisnik tip: vlasnik mesta ili ne pa
+po tom redirektovati na stranu 1 ili 2 ) i obrnuto; korisnik koji nije vlasnik samo ide na stranu 1 da rezervise
+Na osnovu logovanja znam koje parking mesto pripada kom korisniku, prosiriti info o useru prilikom logovanja
+Ako je korisnik koji nije vlasnik parkirao i nije kliknuo u app da je zauzeo to mesto prilikom parkiranja —> i on
+gubi rejting (negativan rejting) (PENAL X1 recimo)
+———————————-
+Taskovi:
+1.registration forma —> dodati logiku vlasnik, parking, broj mesta
+2.Commitovi nakon register, login, setup database, povezivanje endpointa i API-ja beka sa frontom; zatim
+3.Uradi formu 1
+4.Uradi formu 2
+5.Implementacija admin side —-> lista usere, zauzeta mesta, ima apsolutno svu evidenciju, dodeljuje
+negativni rejting (penale) …
+6.Admin view
+
+Potreban administrator da vodi racuna ko ce biti vlasnik, ko nece biti vlasnik; upavljanje aplikacijom
+administrator u sistemu koji lista korisnike, menja tipove da li je vlasnik ili nije pa bi potom on imao rolu ko je
+vlasnik ko nije
+
+Nije mikroservisna nego monolitna ——> servisi se ne pokrecu odvojeno
